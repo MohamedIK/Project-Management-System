@@ -89,7 +89,6 @@ namespace Project_Management_System.ORM
             {
                 string sqlQuery = "SELECT * FROM Project WHERE Id=" + id;
                 using var command = new SqlCommand(sqlQuery, connection);
-                command.CommandType = CommandType.StoredProcedure;
 
                 connection.Open();
 
@@ -121,7 +120,6 @@ namespace Project_Management_System.ORM
             {
                 string sqlQuery = "SELECT * FROM Task WHERE ProjectId=" + id;
                 using var command = new SqlCommand(sqlQuery, connection);
-                command.CommandType = CommandType.StoredProcedure;
 
                 connection.Open();
 
@@ -154,7 +152,6 @@ namespace Project_Management_System.ORM
             {
                 string sqlQuery = "SELECT * FROM Bug WHERE ProjectId=" + id;
                 using var command = new SqlCommand(sqlQuery, connection);
-                command.CommandType = CommandType.StoredProcedure;
 
                 connection.Open();
 
