@@ -1,4 +1,9 @@
-﻿namespace Project_Management_System
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Windows.Forms;
+
+namespace Project_Management_System
 {
     partial class LoginForm
     {
