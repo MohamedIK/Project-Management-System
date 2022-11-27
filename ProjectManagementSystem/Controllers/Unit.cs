@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ProjectManagementSystem.ORM
+namespace ProjectManagementSystem.Controllers
 {
     /// <summary>
     /// Represents a void type, since <see cref="System.Void"/> is not a valid return type in C#.
@@ -12,10 +8,9 @@ namespace ProjectManagementSystem.ORM
     public readonly struct Unit : IEquatable<Unit>, IComparable<Unit>, IComparable
     {
         private static readonly Unit _value = new Unit();
-
         public static ref readonly Unit Value => ref _value;
 
-        public static Task<Unit> Task { get; } = System.Threading.Tasks.Task.FromResult(_value);
+        public static System.Threading.Tasks.Task<Unit> Task { get; } = System.Threading.Tasks.Task.FromResult(_value);
 
         public int CompareTo(Unit other) => 0;
 

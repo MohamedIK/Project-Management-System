@@ -1,10 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using ProjectManagementSystem.Models;
+﻿using System.Collections.Generic;
 
-namespace ProjectManagementSystem.ORM
+namespace ProjectManagementSystem.Controllers
 {
     public interface IController<T> where T : class
     {

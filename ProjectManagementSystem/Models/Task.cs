@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace ProjectManagementSystem.Models
 {
@@ -10,8 +7,9 @@ namespace ProjectManagementSystem.Models
         None,
         Low,
         Medium,
-        High,
+        High
     }
+
     public class Task
     {
         public int Id { get; set; }

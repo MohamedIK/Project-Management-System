@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace ProjectManagementSystem.Models
 {
@@ -10,8 +7,9 @@ namespace ProjectManagementSystem.Models
         None,
         Low,
         Medium,
-        High,
+        High
     }
+
     public enum BugStatus
     {
         None = 0,
@@ -21,6 +19,7 @@ namespace ProjectManagementSystem.Models
         Resolved,
         Closed
     }
+
     public class Bug
     {
         public int Id { get; set; }

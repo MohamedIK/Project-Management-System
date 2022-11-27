@@ -1,16 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Windows.Forms;
-
-namespace ProjectManagementSystem.Models
+﻿namespace ProjectManagementSystem.Models
 {
     public enum Role
     {
         None,
         Developer,
         Manager,
-        Admin,
+        Admin
     }
 
     public class Developer
@@ -19,8 +14,7 @@ namespace ProjectManagementSystem.Models
         public string Name { get; set; }
         public string Email { get; set; }
         public string Username { get; set; }
-        public byte[] PasswordHash { get; set; }
-        public byte[] PasswordSalt { get; set; }
+        public string Password { get; set; }
         public Role Role { get; set; } = Role.None;
     }
 }

@@ -1,25 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Configuration;
 using ProjectManagementSystem.Models;
 
-namespace ProjectManagementSystem.ORM
+namespace ProjectManagementSystem.Controllers
 {
     public class ProjectController : IController<Project>
     {
         public Result<Unit> Add(Project project)
         {
-            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+            var connection =
+                new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
 
-            var command = new SqlCommand("Procedure_Project_Add", connection);
+            var command = new SqlCommand("ProcedureProjectAdd", connection);
             command.CommandType = CommandType.StoredProcedure;
 
             command.Parameters.AddWithValue("@Name", project.Name);
             command.Parameters.AddWithValue("@Description", project.Description);
             command.Parameters.AddWithValue("@StartDate", project.StartDate);
             command.Parameters.AddWithValue("@EndDate", project.EndDate);
+            command.Parameters.AddWithValue("@CreatedOn", DateTime.Now);
+            command.Parameters.AddWithValue("@UpdatedOn", DateTime.Now);
 
             try
             {
@@ -43,8 +46,9 @@ namespace ProjectManagementSystem.ORM
 
         public Result<Unit> Update(Project project)
         {
-            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
-            var command = new SqlCommand("Procedure_Project_Update", connection);
+            var connection =
+                new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+            var command = new SqlCommand("ProcedureProjectUpdate", connection);
             command.CommandType = CommandType.StoredProcedure;
 
             command.Parameters.AddWithValue("@Id", project.Id);
@@ -79,9 +83,10 @@ namespace ProjectManagementSystem.ORM
         {
             var list = new List<Project>();
 
-            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+            var connection =
+                new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
 
-            var command = new SqlCommand("Procedure_Project_GetAll", connection);
+            var command = new SqlCommand("ProcedureProjectGetAll", connection);
             command.CommandType = CommandType.StoredProcedure;
 
             try
@@ -92,7 +97,7 @@ namespace ProjectManagementSystem.ORM
 
                 while (reader.Read())
                 {
-                    var project = new Project()
+                    var project = new Project
                     {
                         // Id = Convert.ToInt32(reader["Id"]),
                         Name = Convert.ToString(reader["Name"]),
@@ -101,7 +106,7 @@ namespace ProjectManagementSystem.ORM
                         EndDate = Convert.ToDateTime(reader["EndDate"].ToString()),
                         ManagerId = Convert.ToInt32(reader["ManagerId"]),
                         CreatedOn = Convert.ToDateTime(reader["CreatedOn"].ToString()),
-                        UpdatedOn = Convert.ToDateTime(reader["UpdatedOn"].ToString()),
+                        UpdatedOn = Convert.ToDateTime(reader["UpdatedOn"].ToString())
                     };
                     list.Add(project);
                 }
@@ -121,20 +126,51 @@ namespace ProjectManagementSystem.ORM
             return Result<IEnumerable<Project>>.Success(list);
         }
 
+        public Result<Unit> Delete(int developerId)
+        {
+            var connection =
+                new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+
+            var command = new SqlCommand("ProcedureProjectDelete", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@Id", developerId);
+
+            try
+            {
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                command.Dispose();
+                connection.Close();
+                return Result<Unit>.Failure(ex.Message);
+            }
+            finally
+            {
+                command.Dispose();
+                connection.Close();
+            }
+
+            return Result<Unit>.Success(Unit.Value);
+        }
+
         public Result<Project> Get(int id)
         {
-            Project project = new Project();
+            var project = new Project();
 
-            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+            var connection =
+                new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
 
-            string sqlQuery = "SELECT * FROM Project WHERE Id=" + id;
+            var sqlQuery = "SELECT * FROM Project WHERE Id=" + id;
             var command = new SqlCommand(sqlQuery, connection);
 
             try
             {
                 connection.Open();
 
-                SqlDataReader reader = command.ExecuteReader();
+                var reader = command.ExecuteReader();
 
                 if (reader.Read())
                 {
@@ -164,13 +200,14 @@ namespace ProjectManagementSystem.ORM
             return Result<Project>.Success(project);
         }
 
-        public Result<IEnumerable<Task>> GetProjectTasks(int id)
+        public Result<IEnumerable<Task>> GetProjectTasks(int projectId)
         {
             var tasks = new List<Task>();
 
-            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+            var connection =
+                new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
 
-            string sqlQuery = "SELECT * FROM Task WHERE ProjectId=" + id;
+            var sqlQuery = "SELECT * FROM Task WHERE ProjectId=" + projectId;
             var command = new SqlCommand(sqlQuery, connection);
 
             try
@@ -181,14 +218,14 @@ namespace ProjectManagementSystem.ORM
 
                 while (reader.Read())
                 {
-                    var task = new Task()
+                    var task = new Task
                     {
                         Title = Convert.ToString(reader["Title"]),
                         Priority = (TaskPriority)Convert.ToInt32(reader["Priority"]),
                         CreatedOn = Convert.ToDateTime(reader["CreatedOn"].ToString()),
                         UpdatedOn = Convert.ToDateTime(reader["UpdatedOn"].ToString()),
                         Description = Convert.ToString(reader["Description"]),
-                        State = Convert.ToBoolean(reader["State"]),
+                        State = Convert.ToBoolean(reader["State"])
                     };
                     tasks.Add(task);
                 }
@@ -208,23 +245,24 @@ namespace ProjectManagementSystem.ORM
             return Result<IEnumerable<Task>>.Success(tasks);
         }
 
-        public Result<IEnumerable<Bug>> GetProjectBugs(int id)
+        public Result<IEnumerable<Bug>> GetProjectBugs(int projectId)
         {
             var bugs = new List<Bug>();
-            var connection = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+            var connection =
+                new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
 
-            string sqlQuery = "SELECT * FROM Bug WHERE ProjectId=" + id;
+            var sqlQuery = "SELECT * FROM Bug WHERE ProjectId=" + projectId;
             var command = new SqlCommand(sqlQuery, connection);
 
             try
             {
                 connection.Open();
 
-                SqlDataReader reader = command.ExecuteReader();
+                var reader = command.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    var bug = new Bug()
+                    var bug = new Bug
                     {
                         Id = Convert.ToInt32(reader["Id"]),
                         Title = Convert.ToString(reader["Title"]),
@@ -232,11 +270,10 @@ namespace ProjectManagementSystem.ORM
                         CreatedOn = Convert.ToDateTime(reader["CreatedOn"].ToString()),
                         UpdatedOn = Convert.ToDateTime(reader["UpdatedOn"].ToString()),
                         Description = Convert.ToString(reader["Description"]),
-                        Status = (BugStatus)Convert.ToInt32(reader["Status"]),
+                        Status = (BugStatus)Convert.ToInt32(reader["Status"])
                     };
                     bugs.Add(bug);
                 }
-
             }
             catch (Exception ex)
             {
@@ -251,36 +288,6 @@ namespace ProjectManagementSystem.ORM
             }
 
             return Result<IEnumerable<Bug>>.Success(bugs);
-        }
-
-        public Result<Unit> Delete(int id)
-        {
-            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
-
-            var command = new SqlCommand("Procedure_Project_Delete", connection);
-            command.CommandType = CommandType.StoredProcedure;
-
-            command.Parameters.AddWithValue("@Id", id);
-
-            try
-            {
-                connection.Open();
-                command.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                command.Dispose();
-                connection.Close();
-                return Result<Unit>.Failure(ex.Message);
-            }
-            finally
-            {
-                command.Dispose();
-                connection.Close();
-            }
-
-
-            return Result<Unit>.Success(Unit.Value);
         }
     }
 }
