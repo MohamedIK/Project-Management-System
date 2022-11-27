@@ -3,7 +3,6 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>Project_Management_System</RootNamespace>
     <UseWindowsForms>true</UseWindowsForms>
 	<ImplicitlyExpandTargetFramework>false</ImplicitlyExpandTargetFramework>
   </PropertyGroup>

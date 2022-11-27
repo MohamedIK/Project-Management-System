@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace Project_Management_System
+namespace ProjectManagementSystem
 {
     internal static class Program
     {

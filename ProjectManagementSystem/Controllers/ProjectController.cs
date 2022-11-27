@@ -1,13 +1,13 @@
-﻿using Project_Management_System.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
+using ProjectManagementSystem.Models;
 
-namespace Project_Management_System.ORM
+namespace ProjectManagementSystem.ORM
 {
-    public class ProjectORM : IORM<Project>
+    public class ProjectController : IController<Project>
     {
         public Result<Unit> Add(Project project)
         {

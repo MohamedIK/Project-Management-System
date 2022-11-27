@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project_Management_System.ORM
+namespace ProjectManagementSystem.ORM
 {
     public sealed class Result<T>
     {

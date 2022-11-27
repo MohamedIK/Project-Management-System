@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project_Management_System.ORM
+namespace ProjectManagementSystem.ORM
 {
     /// <summary>
     /// Represents a void type, since <see cref="System.Void"/> is not a valid return type in C#.

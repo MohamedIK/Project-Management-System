@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Project_Management_System.Models;
+using ProjectManagementSystem.Models;
 
-namespace Project_Management_System.ORM
+namespace ProjectManagementSystem.ORM
 {
-    public interface IORM<T> where T : class
+    public interface IController<T> where T : class
     {
         Result<IEnumerable<T>> GetAll();
         Result<Unit> Add(T entity);
