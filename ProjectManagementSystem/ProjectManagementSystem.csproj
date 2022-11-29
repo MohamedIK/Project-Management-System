@@ -21,4 +21,9 @@
 	<ItemGroup>
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Compile Update="View\ProjectsList.cs">
+	    <SubType>Form</SubType>
+	  </Compile>
+	</ItemGroup>
 </Project>
