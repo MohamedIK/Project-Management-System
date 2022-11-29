@@ -29,5 +29,6 @@ namespace ProjectManagementSystem.Models
         public BugPriority Priority { get; set; } = BugPriority.None;
         public DateTime CreatedOn { get; set; } = DateTime.Now;
         public DateTime UpdatedOn { get; set; } = DateTime.Now;
+        public int? ProjectId { get; set; } = null;
     }
 }
