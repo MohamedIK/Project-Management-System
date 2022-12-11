@@ -30,6 +30,7 @@ CREATE TABLE Developer
     [Email] NVARCHAR UNIQUE NOT NULL,
     [PasswordHash] NVARCHAR NOT NULL,
     [PasswordSalt] NVARCHAR NOT NULL,
+    [Role] INT NOT NULL,
 );
 
 CREATE TABLE Bug
