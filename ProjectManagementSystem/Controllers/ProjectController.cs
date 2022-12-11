@@ -79,6 +79,36 @@ namespace ProjectManagementSystem.Controllers
             return Result<Unit>.Success(Unit.Value);
         }
 
+        public Result<Unit> Delete(int developerId)
+        {
+            var connection =
+                new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+
+            var command = new SqlCommand("ProcedureProjectDelete", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@Id", developerId);
+
+            try
+            {
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                command.Dispose();
+                connection.Close();
+                return Result<Unit>.Failure(ex.Message);
+            }
+            finally
+            {
+                command.Dispose();
+                connection.Close();
+            }
+
+            return Result<Unit>.Success(Unit.Value);
+        }
+
         public Result<IEnumerable<Project>> GetAll()
         {
             var list = new List<Project>();
@@ -86,8 +116,8 @@ namespace ProjectManagementSystem.Controllers
             var connection =
                 new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
 
-            var command = new SqlCommand("ProcedureProjectGetAll", connection);
-            command.CommandType = CommandType.StoredProcedure;
+            const string sqlQuery = "SELECT Name, Description, StartDate, EndDate, ManagerId, CreatedOn, UpdatedOn FROM Project";
+            var command = new SqlCommand(sqlQuery, connection);
 
             try
             {
@@ -124,36 +154,6 @@ namespace ProjectManagementSystem.Controllers
             }
 
             return Result<IEnumerable<Project>>.Success(list);
-        }
-
-        public Result<Unit> Delete(int developerId)
-        {
-            var connection =
-                new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
-
-            var command = new SqlCommand("ProcedureProjectDelete", connection);
-            command.CommandType = CommandType.StoredProcedure;
-
-            command.Parameters.AddWithValue("@Id", developerId);
-
-            try
-            {
-                connection.Open();
-                command.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                command.Dispose();
-                connection.Close();
-                return Result<Unit>.Failure(ex.Message);
-            }
-            finally
-            {
-                command.Dispose();
-                connection.Close();
-            }
-
-            return Result<Unit>.Success(Unit.Value);
         }
 
         public Result<Project> Get(int id)

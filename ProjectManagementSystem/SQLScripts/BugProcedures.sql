@@ -1,9 +1,8 @@
 USE ProjectManagementSystem;
-
-CREATE PROCEDURE ProcedureBugAdd
-(
+GO
+CREATE PROCEDURE ProcedureBugAdd(
     @Title NVARCHAR,
-    @Description NVARCHAR,
+    @Description NVARCHAR(MAX),
     @Status INT,
     @Priority INT,
     @CreatedOn DateTime,
@@ -11,12 +10,11 @@ CREATE PROCEDURE ProcedureBugAdd
     @ProjectId INT
 )
 AS
-    INSERT INTO Bug(Title, Description, Status, Priority, CreatedOn, UpdatedOn, ProjectId)
-    VALUES(@Title, @Description, @Status, @Priority, @CreatedOn, @UpdatedOn, @ProjectId)
+INSERT INTO Bug(Title, Description, Status, Priority, CreatedOn, UpdatedOn, ProjectId)
+VALUES (@Title, @Description, @Status, @Priority, @CreatedOn, @UpdatedOn, @ProjectId)
 GO;
 
-CREATE PROCEDURE ProcedureBugUpdate
-(
+CREATE PROCEDURE ProcedureBugUpdate(
     @Id INT,
     @Title NVARCHAR,
     @Description NVARCHAR,
@@ -25,16 +23,20 @@ CREATE PROCEDURE ProcedureBugUpdate
     @UpdatedOn DATETIME
 )
 AS
-    UPDATE Bug
-    SET Id = @Id, Title = @Title, Description = @Description, Status = @Status, Priority = @Priority, UpdatedOn = @UpdatedOn
-    WHERE Id = @Id;
+UPDATE Bug
+SET Title       = @Title,
+    Description = @Description,
+    Status      = @Status,
+    Priority    = @Priority,
+    UpdatedOn   = @UpdatedOn
+WHERE Id = @Id;
 GO;
 
-CREATE PROCEDURE ProcedureBugDelete
-(
+CREATE PROCEDURE ProcedureBugDelete(
     @Id INT
 )
 AS
-    DELETE FROM Bug
-    WHERE Id = @Id;
+DELETE
+FROM Bug
+WHERE Id = @Id;
 GO;

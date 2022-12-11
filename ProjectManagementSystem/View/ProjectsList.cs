@@ -1,6 +1,5 @@
-using ProjectManagementSystem.Controllers;
-using ProjectManagementSystem.Models;
 using System.Windows.Forms;
+using ProjectManagementSystem.Controllers;
 
 namespace ProjectManagementSystem
 {
@@ -20,7 +19,9 @@ namespace ProjectManagementSystem
                 projectGridView.DataSource = projectsResult.Value;
             }
             else
+            {
                 MessageBox.Show(projectsResult.Error);
+            }
         }
 
         private void projectGridView_RowHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)

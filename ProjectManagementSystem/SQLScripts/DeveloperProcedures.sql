@@ -1,8 +1,7 @@
 ﻿USE ProjectManagementSystem;
-
-CREATE PROCEDURE ProcedureDeveloperAdd
-(
-    @Name NVARCHAR,
+GO
+CREATE PROCEDURE ProcedureDeveloperAdd(
+    @FullName NVARCHAR,
     @Email NVARCHAR,
     @Username NVARCHAR,
     @PasswordHash NVARCHAR,
@@ -10,28 +9,29 @@ CREATE PROCEDURE ProcedureDeveloperAdd
     @Role INT
 )
 AS
-    INSERT INTO Developer(Name, Email, Username, PasswordHash, PasswordSalt, Role)
-    VALUES(@Name, @Email, @Username, @PasswordHash, @PasswordSalt, @Role)
+INSERT INTO Developer(FullName, Email, Username, PasswordHash, PasswordSalt, Role)
+VALUES (@FullName, @Email, @Username, @PasswordHash, @PasswordSalt, @Role)
 GO;
 
-CREATE PROCEDURE ProcedureDeveloperUpdate
-(
+CREATE PROCEDURE ProcedureDeveloperUpdate(
     @Id INT,
-    @Name NVARCHAR,
+    @FullName NVARCHAR,
     @Username NVARCHAR,
     @Role INT
 )
 AS
-    UPDATE Developer
-    SET Name = @Name, Username = @Username, Role = @Role
-    WHERE Id = @Id;
+UPDATE Developer
+SET FullName = @FullName,
+    Username = @Username,
+    Role     = @Role
+WHERE Id = @Id;
 GO;
 
-CREATE PROCEDURE ProcedureDeveloperDelete
-(
+CREATE PROCEDURE ProcedureDeveloperDelete(
     @Id INT
 )
 AS
-    DELETE FROM Developer
-    WHERE Id = @Id;
+DELETE
+FROM Developer
+WHERE Id = @Id;
 GO;
