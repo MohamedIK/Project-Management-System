@@ -32,6 +32,6 @@ CREATE PROCEDURE ProcedureDeveloperDelete
     @Id INT
 )
 AS
-    DELETE  Developer
+    DELETE FROM Developer
     WHERE Id = @Id;
 GO;

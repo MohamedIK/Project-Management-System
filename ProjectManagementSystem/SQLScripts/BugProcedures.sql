@@ -35,6 +35,6 @@ CREATE PROCEDURE ProcedureBugDelete
     @Id INT
 )
 AS
-    DELETE  Bug
+    DELETE FROM Bug
     WHERE Id = @Id;
 GO;
