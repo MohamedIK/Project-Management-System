@@ -6,13 +6,13 @@ namespace ProjectManagementSystem
 {
     public partial class ProjectsList : Form
     {
-        private readonly ProjectController projectController = new ProjectController();
+        private readonly ProjectController _projectController = new ProjectController();
 
         public ProjectsList()
         {
             InitializeComponent();
 
-            var projectsResult = projectController.GetAll();
+            var projectsResult = _projectController.GetAll();
 
             if (projectsResult.IsSuccess)
             {
