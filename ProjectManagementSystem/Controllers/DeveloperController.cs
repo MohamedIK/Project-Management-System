@@ -163,7 +163,7 @@ namespace ProjectManagementSystem.Controllers
                 new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
 
             var sqlQuery =
-                "SELECT Title, Description, Status, Priority, CreatedOn, UpdatedOn FROM Bug WHERE DeveloperId=" +
+                "SELECT Title, Description, State, Priority, CreatedOn, UpdatedOn FROM Task WHERE DeveloperId=" +
                 developerId;
             var command = new SqlCommand(sqlQuery, connection);
 

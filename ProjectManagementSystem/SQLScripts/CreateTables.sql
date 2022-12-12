@@ -16,10 +16,12 @@ CREATE TABLE Project
 CREATE TABLE Task
 (
     [Id]          INT PRIMARY KEY IDENTITY (1,1),
-    [Name]        NVARCHAR UNIQUE NOT NULL,
+    [Title]       NVARCHAR UNIQUE NOT NULL,
     [Description] NVARCHAR(MAX),
     [State]       NVARCHAR        NOT NULL,
     [Priority]    INT             NOT NULL,
+    [CreatedOn]   DATETIME        NOT NULL,
+    [UpdatedOn]   DATETIME        NOT NULL,
 );
 
 CREATE TABLE Developer

@@ -19,5 +19,6 @@ namespace ProjectManagementSystem.Models
         public TaskPriority Priority { get; set; } = TaskPriority.None;
         public DateTime CreatedOn { get; set; } = DateTime.Now;
         public DateTime UpdatedOn { get; set; } = DateTime.Now;
+        public int ProjectId { get; set; }
     }
 }

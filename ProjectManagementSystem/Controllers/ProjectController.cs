@@ -116,7 +116,8 @@ namespace ProjectManagementSystem.Controllers
             var connection =
                 new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
 
-            const string sqlQuery = "SELECT Name, Description, StartDate, EndDate, ManagerId, CreatedOn, UpdatedOn FROM Project";
+            const string sqlQuery =
+                "SELECT Name, Description, StartDate, EndDate, ManagerId, CreatedOn, UpdatedOn, Developer.Id ,FullName FROM Project, Developer WHERE Developer.Id=Project.ManagerId";
             var command = new SqlCommand(sqlQuery, connection);
 
             try
@@ -129,12 +130,13 @@ namespace ProjectManagementSystem.Controllers
                 {
                     var project = new Project
                     {
-                        // Id = Convert.ToInt32(reader["Id"]),
-                        Name = Convert.ToString(reader["Name"]),
-                        Description = Convert.ToString(reader["Description"]),
+                        Id = Convert.ToInt32(reader["Id"]),
+                        Name = Convert.ToString(reader["Name"]) ?? string.Empty,
+                        Description = Convert.ToString(reader["Description"]) ?? string.Empty,
                         StartDate = Convert.ToDateTime(reader["StartDate"].ToString()),
                         EndDate = Convert.ToDateTime(reader["EndDate"].ToString()),
-                        ManagerId = Convert.ToInt32(reader["ManagerId"]),
+                        ManagerId = null,
+                        ManagerName = Convert.ToString(reader["ManagerName"]),
                         CreatedOn = Convert.ToDateTime(reader["CreatedOn"].ToString()),
                         UpdatedOn = Convert.ToDateTime(reader["UpdatedOn"].ToString())
                     };
@@ -175,8 +177,8 @@ namespace ProjectManagementSystem.Controllers
                 if (reader.Read())
                 {
                     project.Id = Convert.ToInt32(reader["Id"]);
-                    project.Name = Convert.ToString(reader["Name"]);
-                    project.Description = Convert.ToString(reader["Description"]);
+                    project.Name = Convert.ToString(reader["Name"]) ?? string.Empty;
+                    project.Description = Convert.ToString(reader["Description"]) ?? string.Empty;
                     project.StartDate = Convert.ToDateTime(reader["StartDate"].ToString());
                     project.EndDate = Convert.ToDateTime(reader["EndDate"].ToString());
                     project.ManagerId = Convert.ToInt32(reader["ManagerId"]);
