@@ -19,7 +19,7 @@ namespace ProjectManagementSystem.Controllers
             command.Parameters.AddWithValue("@Title", bug.Title);
             command.Parameters.AddWithValue("@Description", bug.Description);
             command.Parameters.AddWithValue("@Status", bug.Status);
-            command.Parameters.AddWithValue("@Priority", bug.Priority);
+            command.Parameters.AddWithValue("@Priority", (int)bug.Priority);
             command.Parameters.AddWithValue("@CreatedOn", DateTime.Now);
             command.Parameters.AddWithValue("@UpdatedOn", DateTime.Now);
             command.Parameters.AddWithValue("@ProjectId", bug.ProjectId);
@@ -55,7 +55,7 @@ namespace ProjectManagementSystem.Controllers
             command.Parameters.AddWithValue("@Title", bug.Title);
             command.Parameters.AddWithValue("@Description", bug.Description);
             command.Parameters.AddWithValue("@Status", bug.Status);
-            command.Parameters.AddWithValue("@Priority", bug.Priority);
+            command.Parameters.AddWithValue("@Priority", (int)bug.Priority);
             command.Parameters.AddWithValue("@UpdatedOn", DateTime.Now);
 
             try

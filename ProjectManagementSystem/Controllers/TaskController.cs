@@ -6,7 +6,7 @@ using ProjectManagementSystem.Models;
 
 namespace ProjectManagementSystem.Controllers
 {
-    public class TaskController
+    public class TaskController : IController<Task>
     {
         public Result<Unit> Add(Task task)
         {
@@ -19,7 +19,7 @@ namespace ProjectManagementSystem.Controllers
             command.Parameters.AddWithValue("@Title", task.Title);
             command.Parameters.AddWithValue("@Description", task.Description);
             command.Parameters.AddWithValue("@State", task.State);
-            command.Parameters.AddWithValue("@Priority", task.Priority);
+            command.Parameters.AddWithValue("@Priority", (int)task.Priority);
             command.Parameters.AddWithValue("@CreatedOn", DateTime.Now);
             command.Parameters.AddWithValue("@UpdatedOn", DateTime.Now);
             command.Parameters.AddWithValue("@ProjectId", task.ProjectId);
@@ -55,7 +55,7 @@ namespace ProjectManagementSystem.Controllers
             command.Parameters.AddWithValue("@Title", task.Title);
             command.Parameters.AddWithValue("@Description", task.Description);
             command.Parameters.AddWithValue("@State", task.State);
-            command.Parameters.AddWithValue("@Priority", task.Priority);
+            command.Parameters.AddWithValue("@Priority", (int)task.Priority);
             command.Parameters.AddWithValue("@UpdatedOn", DateTime.Now);
 
             try
@@ -134,6 +134,49 @@ namespace ProjectManagementSystem.Controllers
             }
 
             return Result<Unit>.Success(Unit.Value);
+        }
+        
+        public Result<Task> Get(int taskId)
+        {
+            var task = new Task();
+
+            var connection =
+                new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+
+            var sqlQuery = "SELECT * FROM Task WHERE Id=" + taskId;
+            var command = new SqlCommand(sqlQuery, connection);
+
+            try
+            {
+                connection.Open();
+
+                var reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    task.Id = Convert.ToInt32(reader["Id"]);
+                    task.Title = Convert.ToString(reader["Title"]) ?? string.Empty;
+                    task.Description = Convert.ToString(reader["Description"]) ?? string.Empty;
+                    task.CreatedOn = Convert.ToDateTime(reader["CreatedOn"].ToString());
+                    task.UpdatedOn = Convert.ToDateTime(reader["UpdatedOn"].ToString());
+                    task.State = Convert.ToBoolean(reader["State"]);
+                    task.Priority = (TaskPriority)Convert.ToInt32(reader["Priority"]);
+                    task.ProjectId = Convert.ToInt32(reader["ProjectId"]);
+                }
+            }
+            catch (Exception ex)
+            {
+                command.Dispose();
+                connection.Close();
+                return Result<Task>.Failure(ex.Message);
+            }
+            finally
+            {
+                command.Dispose();
+                connection.Close();
+            }
+
+            return Result<Task>.Success(task);
         }
     }
 }

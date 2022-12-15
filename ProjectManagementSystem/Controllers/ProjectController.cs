@@ -109,6 +109,36 @@ namespace ProjectManagementSystem.Controllers
             return Result<Unit>.Success(Unit.Value);
         }
 
+        public Result<int> Count()
+        {
+            int number;
+
+            var connection =
+                new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+
+            const string sqlQuery = "SELECT COUNT(*) FROM Project";
+            var command = new SqlCommand(sqlQuery, connection);
+
+            try
+            {
+                connection.Open();
+                number = Convert.ToInt32(command.ExecuteScalar());
+            }
+            catch (Exception ex)
+            {
+                command.Dispose();
+                connection.Close();
+                return Result<int>.Failure(ex.Message);
+            }
+            finally
+            {
+                command.Dispose();
+                connection.Close();
+            }
+
+            return Result<int>.Success(number);
+        }
+
         public Result<IEnumerable<Project>> GetAll()
         {
             var list = new List<Project>();
@@ -222,6 +252,7 @@ namespace ProjectManagementSystem.Controllers
                 {
                     var task = new Task
                     {
+                        Id = Convert.ToInt32(reader["Id"]),
                         Title = Convert.ToString(reader["Title"]),
                         Priority = (TaskPriority)Convert.ToInt32(reader["Priority"]),
                         CreatedOn = Convert.ToDateTime(reader["CreatedOn"].ToString()),
