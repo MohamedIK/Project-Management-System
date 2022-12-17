@@ -11,7 +11,7 @@ CREATE PROCEDURE ProcedureDeveloperAdd(
 AS
 INSERT INTO Developer(FullName, Email, Username, PasswordHash, PasswordSalt, Role)
 VALUES (@FullName, @Email, @Username, @PasswordHash, @PasswordSalt, @Role)
-GO;
+GO
 
 CREATE PROCEDURE ProcedureDeveloperUpdate(
     @Id INT,
@@ -25,7 +25,7 @@ SET FullName = @FullName,
     Username = @Username,
     Role     = @Role
 WHERE Id = @Id;
-GO;
+GO
 
 CREATE PROCEDURE ProcedureDeveloperDelete(
     @Id INT
@@ -34,4 +34,4 @@ AS
 DELETE
 FROM Developer
 WHERE Id = @Id;
-GO;
+GO

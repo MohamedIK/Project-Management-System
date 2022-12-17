@@ -12,7 +12,7 @@ CREATE PROCEDURE ProcedureProjectAdd(
 AS
 INSERT INTO Project(Name, Description, StartDate, EndDate, CreatedOn, UpdatedOn, ManagerId)
 VALUES (@Name, @Description, @StartDate, @EndDate, @CreatedOn, @UpdatedOn, @ManagerId)
-GO;
+GO
 
 CREATE PROCEDURE ProcedureProjectUpdate(
     @Id INT,
@@ -32,7 +32,7 @@ SET Name        = @Name,
     ManagerId   = @ManagerId,
     UpdatedOn   = @UpdatedOn
 WHERE Id = @Id;
-GO;
+GO
 
 CREATE PROCEDURE ProcedureProjectDelete(
     @Id INT
@@ -41,4 +41,4 @@ AS
 DELETE
 FROM Project
 WHERE Id = @Id;
-GO;
+GO

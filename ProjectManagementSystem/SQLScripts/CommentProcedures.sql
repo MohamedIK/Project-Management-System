@@ -9,7 +9,7 @@ CREATE PROCEDURE ProcedureCommentAdd(
 AS
 INSERT INTO Comment(Content, CreatedOn, BugId, AuthorId)
 VALUES (@Content, @CreatedOn, @BugId, @AuthorId)
-GO;
+GO
 
 CREATE PROCEDURE ProcedureCommentDelete(
     @Id INT
@@ -18,4 +18,4 @@ AS
 DELETE
 FROM Comment
 WHERE Id = @Id;
-GO;
+GO

@@ -12,7 +12,7 @@ CREATE PROCEDURE ProcedureBugAdd(
 AS
 INSERT INTO Bug(Title, Description, Status, Priority, CreatedOn, UpdatedOn, ProjectId)
 VALUES (@Title, @Description, @Status, @Priority, @CreatedOn, @UpdatedOn, @ProjectId)
-GO;
+GO
 
 CREATE PROCEDURE ProcedureBugUpdate(
     @Id INT,
@@ -30,7 +30,7 @@ SET Title       = @Title,
     Priority    = @Priority,
     UpdatedOn   = @UpdatedOn
 WHERE Id = @Id;
-GO;
+GO
 
 CREATE PROCEDURE ProcedureBugDelete(
     @Id INT
@@ -39,4 +39,4 @@ AS
 DELETE
 FROM Bug
 WHERE Id = @Id;
-GO;
+GO

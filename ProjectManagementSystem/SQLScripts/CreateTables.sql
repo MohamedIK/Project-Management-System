@@ -61,18 +61,6 @@ ALTER TABLE Project
 
 ALTER TABLE Project
     ADD DeveloperId INT;
--- ALTER TABLE Project
---     ADD FOREIGN KEY (DeveloperId) REFERENCES Developer (Id);
-
--- ALTER TABLE Project
---     ADD BugId INT;
--- ALTER TABLE Project
---     ADD FOREIGN KEY (BugId) REFERENCES Bug (Id);
--- 
--- ALTER TABLE Project
---     ADD TaskId INT;
--- ALTER TABLE Project
---     ADD FOREIGN KEY (TaskId) REFERENCES Task (Id);
 
 -- Task Table Relationships
 ALTER TABLE Task

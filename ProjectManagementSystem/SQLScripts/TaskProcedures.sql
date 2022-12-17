@@ -12,7 +12,7 @@ CREATE PROCEDURE ProcedureTaskAdd(
 AS
 INSERT INTO Task(Title, Description, State, Priority, CreatedOn, UpdatedOn, ProjectId)
 VALUES (@Title, @Description, @State, @Priority, @CreatedOn, @UpdatedOn, @ProjectId)
-GO;
+GO
 
 CREATE PROCEDURE ProcedureTaskUpdate(
     @Id INT,
@@ -30,7 +30,7 @@ SET Title       = @Title,
     Priority    = @Priority,
     UpdatedOn   = @UpdatedOn
 WHERE Id = @Id;
-GO;
+GO
 
 CREATE PROCEDURE ProcedureTaskDelete(
     @Id INT
@@ -39,4 +39,4 @@ AS
 DELETE
 FROM Task
 WHERE Id = @Id;
-GO;
+GO
