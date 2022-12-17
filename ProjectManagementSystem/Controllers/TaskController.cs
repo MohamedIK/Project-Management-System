@@ -135,7 +135,7 @@ namespace ProjectManagementSystem.Controllers
 
             return Result<Unit>.Success(Unit.Value);
         }
-        
+
         public Result<Task> Get(int taskId)
         {
             var task = new Task();
@@ -159,7 +159,7 @@ namespace ProjectManagementSystem.Controllers
                     task.Description = Convert.ToString(reader["Description"]) ?? string.Empty;
                     task.CreatedOn = Convert.ToDateTime(reader["CreatedOn"].ToString());
                     task.UpdatedOn = Convert.ToDateTime(reader["UpdatedOn"].ToString());
-                    task.State = Convert.ToBoolean(reader["State"]);
+                    task.State = Convert.ToBoolean(Convert.ToInt32(reader["State"]));
                     task.Priority = (TaskPriority)Convert.ToInt32(reader["Priority"]);
                     task.ProjectId = Convert.ToInt32(reader["ProjectId"]);
                 }

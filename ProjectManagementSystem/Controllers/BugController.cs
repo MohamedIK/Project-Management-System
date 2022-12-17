@@ -18,7 +18,7 @@ namespace ProjectManagementSystem.Controllers
 
             command.Parameters.AddWithValue("@Title", bug.Title);
             command.Parameters.AddWithValue("@Description", bug.Description);
-            command.Parameters.AddWithValue("@Status", bug.Status);
+            command.Parameters.AddWithValue("@Status", (int)bug.Status);
             command.Parameters.AddWithValue("@Priority", (int)bug.Priority);
             command.Parameters.AddWithValue("@CreatedOn", DateTime.Now);
             command.Parameters.AddWithValue("@UpdatedOn", DateTime.Now);
@@ -134,6 +134,49 @@ namespace ProjectManagementSystem.Controllers
             }
 
             return Result<Unit>.Success(Unit.Value);
+        }
+
+        public Result<Bug> Get(int bugId)
+        {
+            var bug = new Bug();
+
+            var connection =
+                new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+
+            var sqlQuery = "SELECT * FROM Bug WHERE Id=" + bugId;
+            var command = new SqlCommand(sqlQuery, connection);
+
+            try
+            {
+                connection.Open();
+
+                var reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    bug.Id = Convert.ToInt32(reader["Id"]);
+                    bug.Title = Convert.ToString(reader["Title"]) ?? string.Empty;
+                    bug.Description = Convert.ToString(reader["Description"]) ?? string.Empty;
+                    bug.CreatedOn = Convert.ToDateTime(reader["CreatedOn"].ToString());
+                    bug.UpdatedOn = Convert.ToDateTime(reader["UpdatedOn"].ToString());
+                    bug.Status = (BugStatus)Convert.ToInt32(reader["Status"]);
+                    bug.Priority = (BugPriority)Convert.ToInt32(reader["Priority"]);
+                    bug.ProjectId = Convert.ToInt32(reader["ProjectId"]);
+                }
+            }
+            catch (Exception ex)
+            {
+                command.Dispose();
+                connection.Close();
+                return Result<Bug>.Failure(ex.Message);
+            }
+            finally
+            {
+                command.Dispose();
+                connection.Close();
+            }
+
+            return Result<Bug>.Success(bug);
         }
     }
 }

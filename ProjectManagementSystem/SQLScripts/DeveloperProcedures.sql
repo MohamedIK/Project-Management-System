@@ -1,11 +1,11 @@
 ﻿USE ProjectManagementSystem;
 GO
 CREATE PROCEDURE ProcedureDeveloperAdd(
-    @FullName NVARCHAR,
-    @Email NVARCHAR,
-    @Username NVARCHAR,
-    @PasswordHash NVARCHAR,
-    @PasswordSalt NVARCHAR,
+    @FullName NVARCHAR(MAX),
+    @Email NVARCHAR(MAX),
+    @Username NVARCHAR(MAX),
+    @PasswordHash NVARCHAR(MAX),
+    @PasswordSalt NVARCHAR(MAX),
     @Role INT
 )
 AS
@@ -15,8 +15,8 @@ GO;
 
 CREATE PROCEDURE ProcedureDeveloperUpdate(
     @Id INT,
-    @FullName NVARCHAR,
-    @Username NVARCHAR,
+    @FullName NVARCHAR(MAX),
+    @Username NVARCHAR(MAX),
     @Role INT
 )
 AS

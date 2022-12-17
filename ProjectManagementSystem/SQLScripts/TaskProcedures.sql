@@ -1,7 +1,7 @@
 USE ProjectManagementSystem;
 GO
 CREATE PROCEDURE ProcedureTaskAdd(
-    @Title NVARCHAR,
+    @Title NVARCHAR(MAX),
     @Description NVARCHAR(MAX),
     @State INT,
     @Priority INT,
@@ -16,8 +16,8 @@ GO;
 
 CREATE PROCEDURE ProcedureTaskUpdate(
     @Id INT,
-    @Title NVARCHAR,
-    @Description NVARCHAR,
+    @Title NVARCHAR(MAX),
+    @Description NVARCHAR(MAX),
     @State INT,
     @Priority INT,
     @UpdatedOn DATETIME

@@ -1,7 +1,7 @@
 USE ProjectManagementSystem;
 GO
 CREATE PROCEDURE ProcedureBugAdd(
-    @Title NVARCHAR,
+    @Title NVARCHAR(MAX),
     @Description NVARCHAR(MAX),
     @Status INT,
     @Priority INT,
@@ -16,8 +16,8 @@ GO;
 
 CREATE PROCEDURE ProcedureBugUpdate(
     @Id INT,
-    @Title NVARCHAR,
-    @Description NVARCHAR,
+    @Title NVARCHAR(MAX),
+    @Description NVARCHAR(MAX),
     @Status INT,
     @Priority INT,
     @UpdatedOn DATETIME

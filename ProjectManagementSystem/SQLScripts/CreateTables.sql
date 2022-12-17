@@ -5,7 +5,7 @@ USE ProjectManagementSystem;
 CREATE TABLE Project
 (
     [Id]          INT PRIMARY KEY IDENTITY (1,1),
-    [Name]        NVARCHAR,
+    [Name]        NVARCHAR(MAX),
     [Description] NVARCHAR(MAX),
     [StartDate]   DATE,
     [EndDate]     DATE,
@@ -16,34 +16,34 @@ CREATE TABLE Project
 CREATE TABLE Task
 (
     [Id]          INT PRIMARY KEY IDENTITY (1,1),
-    [Title]       NVARCHAR UNIQUE NOT NULL,
+    [Title]       NVARCHAR(512) UNIQUE NOT NULL,
     [Description] NVARCHAR(MAX),
-    [State]       NVARCHAR        NOT NULL,
-    [Priority]    INT             NOT NULL,
-    [CreatedOn]   DATETIME        NOT NULL,
-    [UpdatedOn]   DATETIME        NOT NULL,
+    [State]       INT                  NOT NULL,
+    [Priority]    INT                  NOT NULL,
+    [CreatedOn]   DATETIME             NOT NULL,
+    [UpdatedOn]   DATETIME             NOT NULL,
 );
 
 CREATE TABLE Developer
 (
     [Id]           INT PRIMARY KEY IDENTITY (1,1),
-    [Username]     NVARCHAR UNIQUE NOT NULL,
-    [FullName]     NVARCHAR        NOT NULL,
-    [Email]        NVARCHAR UNIQUE NOT NULL,
-    [PasswordHash] NVARCHAR        NOT NULL,
-    [PasswordSalt] NVARCHAR        NOT NULL,
-    [Role]         INT             NOT NULL,
+    [Username]     NVARCHAR(512) UNIQUE NOT NULL,
+    [FullName]     NVARCHAR(MAX)        NOT NULL,
+    [Email]        NVARCHAR(512) UNIQUE NOT NULL,
+    [PasswordHash] VARCHAR(MAX)         NOT NULL,
+    [PasswordSalt] VARCHAR(MAX)         NOT NULL,
+    [Role]         INT                  NOT NULL,
 );
 
 CREATE TABLE Bug
 (
     [Id]          INT PRIMARY KEY IDENTITY (1,1),
-    [Title]       NVARCHAR NOT NULL,
+    [Title]       NVARCHAR(MAX) NOT NULL,
     [Description] NVARCHAR(MAX),
-    [Status]      NVARCHAR NOT NULL,
-    [CreatedOn]   DATETIME NOT NULL,
-    [UpdatedOn]   DATETIME NOT NULL,
-    [Priority]    INT      NOT NULL,
+    [Status]      INT           NOT NULL,
+    [CreatedOn]   DATETIME      NOT NULL,
+    [UpdatedOn]   DATETIME      NOT NULL,
+    [Priority]    INT           NOT NULL,
 );
 
 CREATE TABLE Comment
@@ -61,18 +61,18 @@ ALTER TABLE Project
 
 ALTER TABLE Project
     ADD DeveloperId INT;
-ALTER TABLE Project
-    ADD FOREIGN KEY (DeveloperId) REFERENCES Developer (Id);
+-- ALTER TABLE Project
+--     ADD FOREIGN KEY (DeveloperId) REFERENCES Developer (Id);
 
-ALTER TABLE Project
-    ADD BugId INT;
-ALTER TABLE Project
-    ADD FOREIGN KEY (BugId) REFERENCES Bug (Id);
-
-ALTER TABLE Project
-    ADD TaskId INT;
-ALTER TABLE Project
-    ADD FOREIGN KEY (TaskId) REFERENCES Task (Id);
+-- ALTER TABLE Project
+--     ADD BugId INT;
+-- ALTER TABLE Project
+--     ADD FOREIGN KEY (BugId) REFERENCES Bug (Id);
+-- 
+-- ALTER TABLE Project
+--     ADD TaskId INT;
+-- ALTER TABLE Project
+--     ADD FOREIGN KEY (TaskId) REFERENCES Task (Id);
 
 -- Task Table Relationships
 ALTER TABLE Task

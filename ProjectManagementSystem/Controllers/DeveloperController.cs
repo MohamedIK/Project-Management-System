@@ -26,8 +26,8 @@ namespace ProjectManagementSystem.Controllers
             command.Parameters.AddWithValue("@FullName", developer.FullName);
             command.Parameters.AddWithValue("@Email", developer.Email);
             command.Parameters.AddWithValue("@Username", developer.Username);
-            command.Parameters.AddWithValue("@PasswordHash", passwordHash);
-            command.Parameters.AddWithValue("@PasswordSalt", passwordSalt);
+            command.Parameters.AddWithValue("@PasswordHash", Convert.ToBase64String(passwordHash));
+            command.Parameters.AddWithValue("@PasswordSalt", Convert.ToBase64String(passwordSalt));
             command.Parameters.AddWithValue("@Role", developer.Role);
 
             try
@@ -119,7 +119,7 @@ namespace ProjectManagementSystem.Controllers
             var connection =
                 new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
 
-            const string sqlQuery = "SELECT Name, Email, Username, Role FROM Developer";
+            const string sqlQuery = "SELECT FullName, Email, Username, Role FROM Developer";
             var command = new SqlCommand(sqlQuery, connection);
 
             try
@@ -163,7 +163,7 @@ namespace ProjectManagementSystem.Controllers
                 new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
 
             var sqlQuery =
-                "SELECT Title, Description, State, Priority, CreatedOn, UpdatedOn FROM Task WHERE DeveloperId=" +
+                "SELECT Title, Description, Status, Priority, CreatedOn, UpdatedOn FROM Task WHERE DeveloperId=" +
                 developerId;
             var command = new SqlCommand(sqlQuery, connection);
 
@@ -209,7 +209,7 @@ namespace ProjectManagementSystem.Controllers
             var connection =
                 new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
 
-            var sqlQuery = "SELECT * FROM Developer WHERE [Email]=" + email;
+            var sqlQuery = $"SELECT * FROM Developer WHERE [Email]='{email}'";
             var command = new SqlCommand(sqlQuery, connection);
 
             try
@@ -223,13 +223,13 @@ namespace ProjectManagementSystem.Controllers
                     developer.Id = Convert.ToInt32(reader["Id"]);
                     developer.FullName = Convert.ToString(reader["FullName"]);
                     developer.Email = Convert.ToString(reader["Email"]);
-                    var passwordHash = Encoding.UTF8.GetBytes(Convert.ToString(reader["PasswordHash"]) ?? string.Empty);
-                    var passwordSalt = Encoding.UTF8.GetBytes(Convert.ToString(reader["passwordSalt"]) ?? string.Empty);
+                    var passwordHash = Convert.FromBase64String((string)reader["PasswordHash"]!);
+                    var passwordSalt = Convert.FromBase64String((string)reader["PasswordSalt"]!);
                     developer.Role = (Role)Convert.ToInt32(reader["Role"]);
                     developer.Password = string.Empty;
 
                     using var hmac = new HMACSHA512(passwordSalt);
-                    var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(developer.Password ?? string.Empty));
+                    var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
 
                     for (var i = 0; i < computedHash.Length; i++)
                         if (computedHash[i] != passwordHash[i])

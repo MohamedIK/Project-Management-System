@@ -23,6 +23,7 @@ namespace ProjectManagementSystem.Controllers
             command.Parameters.AddWithValue("@EndDate", project.EndDate);
             command.Parameters.AddWithValue("@CreatedOn", DateTime.Now);
             command.Parameters.AddWithValue("@UpdatedOn", DateTime.Now);
+            command.Parameters.AddWithValue("@ManagerId", project.ManagerId);
 
             try
             {
@@ -79,7 +80,7 @@ namespace ProjectManagementSystem.Controllers
             return Result<Unit>.Success(Unit.Value);
         }
 
-        public Result<Unit> Delete(int developerId)
+        public Result<Unit> Delete(int projectId)
         {
             var connection =
                 new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
@@ -87,7 +88,7 @@ namespace ProjectManagementSystem.Controllers
             var command = new SqlCommand("ProcedureProjectDelete", connection);
             command.CommandType = CommandType.StoredProcedure;
 
-            command.Parameters.AddWithValue("@Id", developerId);
+            command.Parameters.AddWithValue("@Id", projectId);
 
             try
             {
@@ -147,7 +148,7 @@ namespace ProjectManagementSystem.Controllers
                 new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
 
             const string sqlQuery =
-                "SELECT Name, Description, StartDate, EndDate, ManagerId, CreatedOn, UpdatedOn, Developer.Id ,FullName FROM Project, Developer WHERE Developer.Id=Project.ManagerId";
+                "SELECT Project.Id, Name, Description, StartDate, EndDate, ManagerId, CreatedOn, UpdatedOn, Developer.Id ,FullName FROM Project, Developer WHERE Developer.Id=Project.ManagerId";
             var command = new SqlCommand(sqlQuery, connection);
 
             try
@@ -165,8 +166,8 @@ namespace ProjectManagementSystem.Controllers
                         Description = Convert.ToString(reader["Description"]) ?? string.Empty,
                         StartDate = Convert.ToDateTime(reader["StartDate"].ToString()),
                         EndDate = Convert.ToDateTime(reader["EndDate"].ToString()),
-                        ManagerId = null,
-                        ManagerName = Convert.ToString(reader["ManagerName"]),
+                        ManagerId = Convert.ToInt32(reader["ManagerId"]),
+                        ManagerName = Convert.ToString(reader["FullName"]),
                         CreatedOn = Convert.ToDateTime(reader["CreatedOn"].ToString()),
                         UpdatedOn = Convert.ToDateTime(reader["UpdatedOn"].ToString())
                     };
@@ -209,12 +210,11 @@ namespace ProjectManagementSystem.Controllers
                     project.Id = Convert.ToInt32(reader["Id"]);
                     project.Name = Convert.ToString(reader["Name"]) ?? string.Empty;
                     project.Description = Convert.ToString(reader["Description"]) ?? string.Empty;
-                    project.StartDate = Convert.ToDateTime(reader["StartDate"].ToString());
-                    project.EndDate = Convert.ToDateTime(reader["EndDate"].ToString());
+                    project.StartDate = Convert.ToDateTime(reader["StartDate"]);
+                    project.EndDate = Convert.ToDateTime(reader["EndDate"]);
                     project.ManagerId = Convert.ToInt32(reader["ManagerId"]);
                     project.CreatedOn = Convert.ToDateTime(reader["CreatedOn"].ToString());
                     project.UpdatedOn = Convert.ToDateTime(reader["UpdatedOn"].ToString());
-                    project.State = Convert.ToBoolean(reader["State"]);
                 }
             }
             catch (Exception ex)
@@ -258,7 +258,8 @@ namespace ProjectManagementSystem.Controllers
                         CreatedOn = Convert.ToDateTime(reader["CreatedOn"].ToString()),
                         UpdatedOn = Convert.ToDateTime(reader["UpdatedOn"].ToString()),
                         Description = Convert.ToString(reader["Description"]),
-                        State = Convert.ToBoolean(reader["State"])
+                        State = Convert.ToBoolean(Convert.ToInt32(reader["State"])),
+                        ProjectId = Convert.ToInt32(reader["ProjectId"])
                     };
                     tasks.Add(task);
                 }
@@ -303,7 +304,8 @@ namespace ProjectManagementSystem.Controllers
                         CreatedOn = Convert.ToDateTime(reader["CreatedOn"].ToString()),
                         UpdatedOn = Convert.ToDateTime(reader["UpdatedOn"].ToString()),
                         Description = Convert.ToString(reader["Description"]),
-                        Status = (BugStatus)Convert.ToInt32(reader["Status"])
+                        Status = (BugStatus)Convert.ToInt32(reader["Status"]),
+                        ProjectId = Convert.ToInt32(reader["ProjectId"])
                     };
                     bugs.Add(bug);
                 }
