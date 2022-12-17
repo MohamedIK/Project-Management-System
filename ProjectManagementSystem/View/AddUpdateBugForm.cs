@@ -23,7 +23,7 @@ namespace ProjectManagementSystem.View
 
             if (isUpdate)
             {
-                Text = "Update Task";
+                Text = "Update Bug";
                 addButton.Text = "Update";
 
                 var result = _bugController.Get(_bugId);
