@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace ProjectManagementSystem.Controllers
+﻿namespace ProjectManagementSystem.Controllers
 {
     public interface IController<T> where T : class
     {

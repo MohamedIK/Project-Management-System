@@ -11,49 +11,6 @@ namespace ProjectManagementSystem.Controllers
 {
     public class DeveloperController : IController<Developer>
     {
-        public Result<IEnumerable<Developer>> GetAll()
-        {
-            var list = new List<Developer>();
-
-            var connection =
-                new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
-
-            var command = new SqlCommand("ProcedureProjectGetAll", connection);
-            command.CommandType = CommandType.StoredProcedure;
-
-            try
-            {
-                connection.Open();
-
-                var reader = command.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    var developer = new Developer
-                    {
-                        Name = Convert.ToString(reader["Name"]),
-                        Email = Convert.ToString(reader["Email"]),
-                        Username = Convert.ToString(reader["Username"]),
-                        Role = (Role)Convert.ToInt32(reader["Role"])
-                    };
-                    list.Add(developer);
-                }
-            }
-            catch (Exception ex)
-            {
-                command.Dispose();
-                connection.Close();
-                return Result<IEnumerable<Developer>>.Failure(ex.Message);
-            }
-            finally
-            {
-                command.Dispose();
-                connection.Close();
-            }
-
-            return Result<IEnumerable<Developer>>.Success(list);
-        }
-
         public Result<Unit> Add(Developer developer)
         {
             var connection =
@@ -66,11 +23,11 @@ namespace ProjectManagementSystem.Controllers
             var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(developer.Password));
             var passwordSalt = hmac.Key;
 
-            command.Parameters.AddWithValue("@Name", developer.Name);
+            command.Parameters.AddWithValue("@FullName", developer.FullName);
             command.Parameters.AddWithValue("@Email", developer.Email);
             command.Parameters.AddWithValue("@Username", developer.Username);
-            command.Parameters.AddWithValue("@PasswordHash", passwordHash);
-            command.Parameters.AddWithValue("@PasswordSalt", passwordSalt);
+            command.Parameters.AddWithValue("@PasswordHash", Convert.ToBase64String(passwordHash));
+            command.Parameters.AddWithValue("@PasswordSalt", Convert.ToBase64String(passwordSalt));
             command.Parameters.AddWithValue("@Role", developer.Role);
 
             try
@@ -101,7 +58,7 @@ namespace ProjectManagementSystem.Controllers
             command.CommandType = CommandType.StoredProcedure;
 
             command.Parameters.AddWithValue("@Id", developer.Id);
-            command.Parameters.AddWithValue("@Name", developer.Name);
+            command.Parameters.AddWithValue("@FullName", developer.FullName);
             command.Parameters.AddWithValue("@Username", developer.Username);
             command.Parameters.AddWithValue("@Role", developer.Role);
 
@@ -155,6 +112,49 @@ namespace ProjectManagementSystem.Controllers
             return Result<Unit>.Success(Unit.Value);
         }
 
+        public Result<IEnumerable<Developer>> GetAll()
+        {
+            var list = new List<Developer>();
+
+            var connection =
+                new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+
+            const string sqlQuery = "SELECT FullName, Email, Username, Role FROM Developer";
+            var command = new SqlCommand(sqlQuery, connection);
+
+            try
+            {
+                connection.Open();
+
+                var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    var developer = new Developer
+                    {
+                        FullName = Convert.ToString(reader["FullName"]),
+                        Email = Convert.ToString(reader["Email"]),
+                        Username = Convert.ToString(reader["Username"]),
+                        Role = (Role)Convert.ToInt32(reader["Role"])
+                    };
+                    list.Add(developer);
+                }
+            }
+            catch (Exception ex)
+            {
+                command.Dispose();
+                connection.Close();
+                return Result<IEnumerable<Developer>>.Failure(ex.Message);
+            }
+            finally
+            {
+                command.Dispose();
+                connection.Close();
+            }
+
+            return Result<IEnumerable<Developer>>.Success(list);
+        }
+
         public Result<IEnumerable<Bug>> GetAssignedBugs(int developerId)
         {
             var list = new List<Bug>();
@@ -162,8 +162,10 @@ namespace ProjectManagementSystem.Controllers
             var connection =
                 new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
 
-            var command = new SqlCommand("ProcedureProjectGetAssignedBugs", connection);
-            command.CommandType = CommandType.StoredProcedure;
+            var sqlQuery =
+                "SELECT Title, Description, Status, Priority, CreatedOn, UpdatedOn FROM Task WHERE DeveloperId=" +
+                developerId;
+            var command = new SqlCommand(sqlQuery, connection);
 
             try
             {
@@ -207,7 +209,7 @@ namespace ProjectManagementSystem.Controllers
             var connection =
                 new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
 
-            var sqlQuery = "SELECT * FROM Developer WHERE [Email]=" + email;
+            var sqlQuery = $"SELECT * FROM Developer WHERE [Email]='{email}'";
             var command = new SqlCommand(sqlQuery, connection);
 
             try
@@ -219,15 +221,15 @@ namespace ProjectManagementSystem.Controllers
                 if (reader.Read())
                 {
                     developer.Id = Convert.ToInt32(reader["Id"]);
-                    developer.Name = Convert.ToString(reader["Name"]);
+                    developer.FullName = Convert.ToString(reader["FullName"]);
                     developer.Email = Convert.ToString(reader["Email"]);
-                    var passwordHash = Encoding.UTF8.GetBytes(Convert.ToString(reader["PasswordHash"]) ?? string.Empty);
-                    var passwordSalt = Encoding.UTF8.GetBytes(Convert.ToString(reader["passwordSalt"]) ?? string.Empty);
+                    var passwordHash = Convert.FromBase64String((string)reader["PasswordHash"]!);
+                    var passwordSalt = Convert.FromBase64String((string)reader["PasswordSalt"]!);
                     developer.Role = (Role)Convert.ToInt32(reader["Role"]);
                     developer.Password = string.Empty;
 
                     using var hmac = new HMACSHA512(passwordSalt);
-                    var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(developer.Password ?? string.Empty));
+                    var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
 
                     for (var i = 0; i < computedHash.Length; i++)
                         if (computedHash[i] != passwordHash[i])

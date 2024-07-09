@@ -6,23 +6,23 @@ using ProjectManagementSystem.Models;
 
 namespace ProjectManagementSystem.Controllers
 {
-    public class BugController : IController<Bug>
+    public class TaskController : IController<Task>
     {
-        public Result<Unit> Add(Bug bug)
+        public Result<Unit> Add(Task task)
         {
             var connection =
                 new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
 
-            var command = new SqlCommand("ProcedureBugAdd", connection);
+            var command = new SqlCommand("ProcedureTaskAdd", connection);
             command.CommandType = CommandType.StoredProcedure;
 
-            command.Parameters.AddWithValue("@Title", bug.Title);
-            command.Parameters.AddWithValue("@Description", bug.Description);
-            command.Parameters.AddWithValue("@Status", (int)bug.Status);
-            command.Parameters.AddWithValue("@Priority", (int)bug.Priority);
+            command.Parameters.AddWithValue("@Title", task.Title);
+            command.Parameters.AddWithValue("@Description", task.Description);
+            command.Parameters.AddWithValue("@State", task.State);
+            command.Parameters.AddWithValue("@Priority", (int)task.Priority);
             command.Parameters.AddWithValue("@CreatedOn", DateTime.Now);
             command.Parameters.AddWithValue("@UpdatedOn", DateTime.Now);
-            command.Parameters.AddWithValue("@ProjectId", bug.ProjectId);
+            command.Parameters.AddWithValue("@ProjectId", task.ProjectId);
 
             try
             {
@@ -44,18 +44,18 @@ namespace ProjectManagementSystem.Controllers
             return Result<Unit>.Success(Unit.Value);
         }
 
-        public Result<Unit> Update(Bug bug)
+        public Result<Unit> Update(Task task)
         {
             var connection =
                 new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
-            var command = new SqlCommand("ProcedureBugUpdate", connection);
+            var command = new SqlCommand("ProcedureTaskUpdate", connection);
             command.CommandType = CommandType.StoredProcedure;
 
-            command.Parameters.AddWithValue("@Id", bug.Id);
-            command.Parameters.AddWithValue("@Title", bug.Title);
-            command.Parameters.AddWithValue("@Description", bug.Description);
-            command.Parameters.AddWithValue("@Status", bug.Status);
-            command.Parameters.AddWithValue("@Priority", (int)bug.Priority);
+            command.Parameters.AddWithValue("@Id", task.Id);
+            command.Parameters.AddWithValue("@Title", task.Title);
+            command.Parameters.AddWithValue("@Description", task.Description);
+            command.Parameters.AddWithValue("@State", task.State);
+            command.Parameters.AddWithValue("@Priority", (int)task.Priority);
             command.Parameters.AddWithValue("@UpdatedOn", DateTime.Now);
 
             try
@@ -78,15 +78,15 @@ namespace ProjectManagementSystem.Controllers
             return Result<Unit>.Success(Unit.Value);
         }
 
-        public Result<Unit> Delete(int bugId)
+        public Result<Unit> Delete(int taskId)
         {
             var connection =
                 new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
 
-            var command = new SqlCommand("ProcedureBugDelete", connection);
+            var command = new SqlCommand("ProcedureTaskDelete", connection);
             command.CommandType = CommandType.StoredProcedure;
 
-            command.Parameters.AddWithValue("@Id", bugId);
+            command.Parameters.AddWithValue("@Id", taskId);
 
             try
             {
@@ -108,12 +108,12 @@ namespace ProjectManagementSystem.Controllers
             return Result<Unit>.Success(Unit.Value);
         }
 
-        public Result<Unit> AssignBug(int bugId, int developerId)
+        public Result<Unit> AssignTask(int taskId, int developerId)
         {
             var connection =
                 new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
 
-            var sqlQuery = $"UPDATE Bug SET DeveloperId={developerId} WHERE Id={bugId}";
+            var sqlQuery = $"UPDATE Task SET DeveloperId={developerId} WHERE Id={taskId}";
             var command = new SqlCommand(sqlQuery, connection);
 
             try
@@ -136,14 +136,14 @@ namespace ProjectManagementSystem.Controllers
             return Result<Unit>.Success(Unit.Value);
         }
 
-        public Result<Bug> Get(int bugId)
+        public Result<Task> Get(int taskId)
         {
-            var bug = new Bug();
+            var task = new Task();
 
             var connection =
                 new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
 
-            var sqlQuery = "SELECT * FROM Bug WHERE Id=" + bugId;
+            var sqlQuery = "SELECT * FROM Task WHERE Id=" + taskId;
             var command = new SqlCommand(sqlQuery, connection);
 
             try
@@ -154,21 +154,21 @@ namespace ProjectManagementSystem.Controllers
 
                 if (reader.Read())
                 {
-                    bug.Id = Convert.ToInt32(reader["Id"]);
-                    bug.Title = Convert.ToString(reader["Title"]) ?? string.Empty;
-                    bug.Description = Convert.ToString(reader["Description"]) ?? string.Empty;
-                    bug.CreatedOn = Convert.ToDateTime(reader["CreatedOn"].ToString());
-                    bug.UpdatedOn = Convert.ToDateTime(reader["UpdatedOn"].ToString());
-                    bug.Status = (BugStatus)Convert.ToInt32(reader["Status"]);
-                    bug.Priority = (BugPriority)Convert.ToInt32(reader["Priority"]);
-                    bug.ProjectId = Convert.ToInt32(reader["ProjectId"]);
+                    task.Id = Convert.ToInt32(reader["Id"]);
+                    task.Title = Convert.ToString(reader["Title"]) ?? string.Empty;
+                    task.Description = Convert.ToString(reader["Description"]) ?? string.Empty;
+                    task.CreatedOn = Convert.ToDateTime(reader["CreatedOn"].ToString());
+                    task.UpdatedOn = Convert.ToDateTime(reader["UpdatedOn"].ToString());
+                    task.State = Convert.ToBoolean(Convert.ToInt32(reader["State"]));
+                    task.Priority = (TaskPriority)Convert.ToInt32(reader["Priority"]);
+                    task.ProjectId = Convert.ToInt32(reader["ProjectId"]);
                 }
             }
             catch (Exception ex)
             {
                 command.Dispose();
                 connection.Close();
-                return Result<Bug>.Failure(ex.Message);
+                return Result<Task>.Failure(ex.Message);
             }
             finally
             {
@@ -176,7 +176,7 @@ namespace ProjectManagementSystem.Controllers
                 connection.Close();
             }
 
-            return Result<Bug>.Success(bug);
+            return Result<Task>.Success(task);
         }
     }
 }

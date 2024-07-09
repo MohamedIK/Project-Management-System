@@ -1,37 +1,37 @@
 ﻿USE ProjectManagementSystem;
-
-CREATE PROCEDURE ProcedureDeveloperAdd
-(
-    @Name NVARCHAR,
-    @Email NVARCHAR,
-    @Username NVARCHAR,
-    @PasswordHash NVARCHAR,
-    @PasswordSalt NVARCHAR,
+GO
+CREATE PROCEDURE ProcedureDeveloperAdd(
+    @FullName NVARCHAR(MAX),
+    @Email NVARCHAR(MAX),
+    @Username NVARCHAR(MAX),
+    @PasswordHash NVARCHAR(MAX),
+    @PasswordSalt NVARCHAR(MAX),
     @Role INT
 )
 AS
-    INSERT INTO Developer(Name, Email, Username, PasswordHash, PasswordSalt, Role)
-    VALUES(@Name, @Email, @Username, @PasswordHash, @PasswordSalt, @Role)
-GO;
+INSERT INTO Developer(FullName, Email, Username, PasswordHash, PasswordSalt, Role)
+VALUES (@FullName, @Email, @Username, @PasswordHash, @PasswordSalt, @Role)
+GO
 
-CREATE PROCEDURE ProcedureDeveloperUpdate
-(
+CREATE PROCEDURE ProcedureDeveloperUpdate(
     @Id INT,
-    @Name NVARCHAR,
-    @Username NVARCHAR,
+    @FullName NVARCHAR(MAX),
+    @Username NVARCHAR(MAX),
     @Role INT
 )
 AS
-    UPDATE Developer
-    SET Name = @Name, Username = @Username, Role = @Role
-    WHERE Id = @Id;
-GO;
+UPDATE Developer
+SET FullName = @FullName,
+    Username = @Username,
+    Role     = @Role
+WHERE Id = @Id;
+GO
 
-CREATE PROCEDURE ProcedureDeveloperDelete
-(
+CREATE PROCEDURE ProcedureDeveloperDelete(
     @Id INT
 )
 AS
-    DELETE FROM Developer
-    WHERE Id = @Id;
-GO;
+DELETE
+FROM Developer
+WHERE Id = @Id;
+GO

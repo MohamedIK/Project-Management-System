@@ -63,4 +63,55 @@
             PublicKeyToken=b77a5c561934e089
         </value>
     </resheader>
+    <metadata name="toolStrip2.TrayLocation"
+              type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+        <value>17, 17</value>
+    </metadata>
+    <metadata name="toolStrip2.Locked"
+              type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+        <value>True</value>
+    </metadata>
+    <assembly alias="System.Drawing"
+              name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/>
+    <data name="addProjectToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing"
+          mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>
+            iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+            YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAsSURBVDhPY6ApkG+Q/w9lkgdGDSDBAJBCUjFUK35AtEJc
+            YNQAKhhAB8DAAAAOayt2eZNNEQAAAABJRU5ErkJggg==
+        </value>
+    </data>
+    <data name="editProjectToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing"
+          mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>
+            iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+            YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADkSURBVDhP1ZJNCsIwEIW70YU3CC1t0hQXddl1wXoBUSyi
+            3qMLT6IrN17C84j1B72AgvoGpiDF1LoRfPAgybxvMoFYP1UYhk0hRIu330kplbque7Jt+yClzPi4ngCM
+            0WDveV4CS1rXnuQF7mICAfccxzlGUdTgiFllmCagPTziiFkIpQwnBGMdwzk844hZBUzjluApR8x6B+Mp
+            O9/3JxwxC+E2fCnG5jfngIccqRbCK/gOz+EYDbbwgMvVwo0Kn+QK8EFNMPYZ7nP5swAtCMaNN4BrrXWH
+            S/UEeAMvgyDQfPQXsqwnK8g/zddAaAMAAAAASUVORK5CYII=
+        </value>
+    </data>
+    <data name="deleteProjectToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing"
+          mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>
+            iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+            YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABYSURBVDhPY8AGFBQUjioqKv6HYXl5+cNQKeIASBOUCQbo
+            fAyAbBuxGKoVAUCCcnJykoQwVs0gQFUDYGx0GsaGakEFowYMOwPwYZoa8AAkSQR+ANUCBAwMANV2kj7G
+            lzr1AAAAAElFTkSuQmCC
+        </value>
+    </data>
+    <data name="refreshToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing"
+          mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>
+            iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+            YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFCSURBVDhPrZI/SwQxEMWnsrLwT6Go30EQUQT/dHaCCAen
+            yayFH8JWC0UtRRD1G1iLl2QPrrMVbCwF4VBRsRAFK33Ze56w3LrN/SBs3uzMIzOJdAf1W6Lhu71MuOOf
+            PyrnPaLpIFUB1i2LusfMJI+mM2LDvVi/xEgODSsobuI72dEgYt14drrELzJCqvUhFD1lxZEig0g0ibnr
+            jT5GgPXbCJ5QxZnscdcZ6w/RziYVsOFaTG2Oqhzrp8X4KypgwoesXfRTlVNp9IpxL1RA3adsuAGqcqKB
+            uncqoO4GM1igKie2ENtuo2EXJmdU5Wg4Qv4OFaiGEfT0JombYqQYU5tA8TOucZgRYp3BZB/+NWkVNzH0
+            VUZyJN5mJ7H+FPv57O3H29F0FubH6Pu1uPgXczmGxAOsW/T6la3Wfl+S+iizuoXID1xDg7MUEy9PAAAA
+            AElFTkSuQmCC
+        </value>
+    </data>
 </root>

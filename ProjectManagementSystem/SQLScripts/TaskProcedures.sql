@@ -1,42 +1,42 @@
 USE ProjectManagementSystem;
 GO
-CREATE PROCEDURE ProcedureBugAdd(
+CREATE PROCEDURE ProcedureTaskAdd(
     @Title NVARCHAR(MAX),
     @Description NVARCHAR(MAX),
-    @Status INT,
+    @State INT,
     @Priority INT,
     @CreatedOn DateTime,
     @UpdatedOn DateTime,
     @ProjectId INT
 )
 AS
-INSERT INTO Bug(Title, Description, Status, Priority, CreatedOn, UpdatedOn, ProjectId)
-VALUES (@Title, @Description, @Status, @Priority, @CreatedOn, @UpdatedOn, @ProjectId)
+INSERT INTO Task(Title, Description, State, Priority, CreatedOn, UpdatedOn, ProjectId)
+VALUES (@Title, @Description, @State, @Priority, @CreatedOn, @UpdatedOn, @ProjectId)
 GO
 
-CREATE PROCEDURE ProcedureBugUpdate(
+CREATE PROCEDURE ProcedureTaskUpdate(
     @Id INT,
     @Title NVARCHAR(MAX),
     @Description NVARCHAR(MAX),
-    @Status INT,
+    @State INT,
     @Priority INT,
     @UpdatedOn DATETIME
 )
 AS
-UPDATE Bug
+UPDATE Task
 SET Title       = @Title,
     Description = @Description,
-    Status      = @Status,
+    State       = @State,
     Priority    = @Priority,
     UpdatedOn   = @UpdatedOn
 WHERE Id = @Id;
 GO
 
-CREATE PROCEDURE ProcedureBugDelete(
+CREATE PROCEDURE ProcedureTaskDelete(
     @Id INT
 )
 AS
 DELETE
-FROM Bug
+FROM Task
 WHERE Id = @Id;
 GO
